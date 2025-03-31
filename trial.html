@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skill Matching Platform</title>
+    <style>
+        /* Basic CSS Styling */
+        body {
+            background: linear-gradient(135deg, #120b23, #ccc6dc);
+            font-family: Arial, sans-serif;
+            
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .container {
+            width: 80%;
+            max-width: 800px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #3e8e41;
+        }
+
+        .skill-option {
+            display: inline-block;
+            width: 30%; /* Adjusted for three options */
+            margin: 10px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .skill-option:hover {
+            background-color: #f0f0f0;
+        }
+
+        #matches-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        #matches-list li {
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 5px;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Style for the contact details */
+        .contact-details {
+            font-style: italic;
+            color: #777;
+        }
+
+        /* Style for the matched skill name */
+        .matched-skill {
+            font-weight: bold;
+            color: #2e7d32; /* A green color */
+        }
+
+        /* Style for the popup */
+        .popup {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: none;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Style for the overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Skill Matching Platform</h1>
+
+    <!-- Registration/Login Section -->
+    <div class="container" id="auth-area">
+        <h2>Register</h2>
+        <input type="text" id="register-username" placeholder="Username">
+        <input type="email" id="register-email" placeholder="Email">
+        <input type="password" id="register-password" placeholder="Password">
+        <button id="register-button">Register</button>
+
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email">
+        <input type="password" id="login-password" placeholder="Password">
+        <button id="login-button">Login</button>
+
+        <p id="auth-message"></p>
+    </div>
+
+    <!-- Home Page (Skill Provider/Receiver Choice) -->
+    <div class="container" id="home-area" style="display: none;">
+        <h2>Welcome, <span id="welcome-username"></span>!</h2>
+        <div class="skill-option" id="provide-skill-option">
+            <h3>Provide Skill</h3>
+            <p>Register your skills and offer help.</p>
+        </div>
+        <div class="skill-option" id="receive-skill-option">
+            <h3>Request Help</h3>
+            <p>Request help from someone with the needed skills.</p>
+        </div>
+         <div class="skill-option" id="matches-option">
+            <h3>View Matches</h3>
+            <p>See the skill matches</p>
+        </div>
+        <button id="logout-button">Logout</button>
+    </div>
+
+    <!-- Skill Registration Area -->
+    <div class="container" id="skill-registration-area" style="display: none;">
+        <h2>Register Your Skills</h2>
+        <textarea id="skills-text" placeholder="List your skills, separated by commas"></textarea>
+        <button id="register-skills-button">Register Skills</button>
+        <p id="skill-registration-message"></p>
+    </div>
+
+    <!-- Skill Request Area -->
+    <div class="container" id="skill-request-area" style="display: none;">
+        <h2>Request Skills</h2>
+        <textarea id="requested-skills-text" placeholder="List the skills you need, separated by commas"></textarea>
+        <button id="request-skills-button">Request Skills</button>
+        <p id="skill-request-message"></p>
+    </div>
+
+    <!-- Skill Matching Area -->
+    <div class="container" id="skill-matching-area" style="display: none;">
+        <h2>Matches</h2>
+        <ul id="matches-list">
+            <!-- Matches will be displayed here -->
+        </ul>
+         <button id="matches-logout-button">Logout</button>
+    </div>
+
+        <!-- Popup message -->
+    <div id="skillRegisteredPopup" class="popup">
+        Skill Registered!  We will let you know when someone needs your help.
+    </div>
+
+    <!-- Overlay -->
+    <div id="overlay" class="overlay"></div>
+
+    <script>
+        // Get DOM elements
+        const authArea = document.getElementById('auth-area');
+        const homeArea = document.getElementById('home-area');
+        const welcomeUsernameSpan = document.getElementById('welcome-username');
+
+        const registerUsernameInput = document.getElementById('register-username');
+        const registerEmailInput = document.getElementById('register-email');
+        const registerPasswordInput = document.getElementById('register-password');
+        const registerButton = document.getElementById('register-button');
+
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginButton = document.getElementById('login-button');
+        const authMessage = document.getElementById('auth-message');
+
+        const provideSkillOption = document.getElementById('provide-skill-option');
+        const receiveSkillOption = document.getElementById('receive-skill-option');
+         const matchesOption = document.getElementById('matches-option');
+        const logoutButton = document.getElementById('logout-button');
+           const matchesLogoutButton = document.getElementById('matches-logout-button');
+
+        const skillRegistrationArea = document.getElementById('skill-registration-area');
+        const skillsTextarea = document.getElementById('skills-text');
+        const registerSkillsButton = document.getElementById('register-skills-button');
+        const skillRegistrationMessage = document.getElementById('skill-registration-message');
+
+        const skillRequestArea = document.getElementById('skill-request-area');
+        const requestedSkillsTextarea = document.getElementById('requested-skills-text');
+        const requestSkillsButton = document.getElementById('request-skills-button');
+        const skillRequestMessage = document.getElementById('skill-request-message');
+
+        const skillMatchingArea = document.getElementById('skill-matching-area');
+        const matchesList = document.getElementById('matches-list');
+
+        const skillRegisteredPopup = document.getElementById('skillRegisteredPopup');
+        const overlay = document.getElementById('overlay');
+
+        // Local Storage
+        let users = JSON.parse(localStorage.getItem('users') || '[]');
+        let currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+
+        // Functions
+        function showArea(areaId) {
+            const areas = ['auth-area', 'home-area', 'skill-registration-area', 'skill-request-area', 'skill-matching-area'];
+            areas.forEach(area => document.getElementById(area).style.display = 'none');
+            document.getElementById(areaId).style.display = 'block';
+        }
+
+        function updateUI() {
+            if (currentUser) {
+                showArea('home-area');
+                welcomeUsernameSpan.textContent = currentUser.username;
+            } else {
+                showArea('auth-area');
+            }
+        }
+
+        function register() {
+            const username = registerUsernameInput.value.trim();
+            const email = registerEmailInput.value.trim();
+            const password = registerPasswordInput.value.trim();
+
+            if (username && email && password) {
+                const existingUser = users.find(user => user.email === email);
+                if (existingUser) {
+                    authMessage.textContent = 'Email already registered.';
+                    return;
+                }
+
+                const newUser = {
+                    username: username,
+                    email: email,
+                    password: password,
+                    skills: [],
+                    requests: []
+                };
+
+                users.push(newUser);
+                localStorage.setItem('users', JSON.stringify(users));
+                authMessage.textContent = 'Registration successful. Please log in.';
+                registerUsernameInput.value = '';
+                registerEmailInput.value = '';
+                registerPasswordInput.value = '';
+            } else {
+                authMessage.textContent = 'Please fill in all fields.';
+            }
+        }
+
+        function login() {
+            const email = loginEmailInput.value.trim();
+            const password = loginPasswordInput.value.trim();
+
+            if (email && password) {
+                const user = users.find(user => user.email === email && user.password === password);
+                if (user) {
+                    currentUser = user;
+                    localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                    authMessage.textContent = '';
+                    loginEmailInput.value = '';
+                    loginPasswordInput.value = '';
+                    updateUI();
+                } else {
+                    authMessage.textContent = 'Invalid credentials.';
+                }
+            } else {
+                authMessage.textContent = 'Please fill in all fields.';
+            }
+        }
+
+        function logout() {
+            currentUser = null;
+            localStorage.removeItem('currentUser');
+            updateUI();
+        }
+
+        function registerSkills() {
+            const skillsText = skillsTextarea.value.trim();
+            if (skillsText) {
+                const skills = skillsText.split(',').map(skill => skill.trim().toLowerCase());
+                currentUser.skills = skills;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                const userIndex = users.findIndex(user => user.email === currentUser.email);
+                users[userIndex] = currentUser;
+                localStorage.setItem('users', JSON.stringify(users));
+                skillRegistrationMessage.textContent = 'Skills registered!';
+                skillsTextarea.value = '';
+
+                 // Show the popup
+                skillRegisteredPopup.style.display = 'block';
+                overlay.style.display = 'block';
+
+                // Hide the popup and overlay after 2 seconds
+                setTimeout(() => {
+                    skillRegisteredPopup.style.display = 'none';
+                    overlay.style.display = 'none';
+                    showArea('home-area'); // Return to home area
+                }, 2000);
+
+
+                // Find matches
+                findMatches();
+                // Return to home area
+            } else {
+                skillRegistrationMessage.textContent = 'Please enter some skills.';
+            }
+        }
+
+        function requestSkills() {
+            const requestedSkillsText = requestedSkillsTextarea.value.trim();
+            if (requestedSkillsText) {
+                const requests = requestedSkillsText.split(',').map(request => request.trim().toLowerCase());
+                currentUser.requests = requests;
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                const userIndex = users.findIndex(user => user.email === currentUser.email);
+                users[userIndex] = currentUser;
+                skillRequestMessage.textContent = 'Skills requested!';
+                requestedSkillsTextarea.value = '';
+
+                // Show the popup
+                skillRegisteredPopup.style.display = 'block';
+                overlay.style.display = 'block';
+
+                // Hide the popup and overlay after 2 seconds
+                setTimeout(() => {
+                    skillRegisteredPopup.style.display = 'none';
+                    overlay.style.display = 'none';
+
+                    findMatches();  // Call findMatches() here to trigger it after requesting skills
+                     showArea('skill-matching-area'); // Always show the matching area after requesting skills
+
+                }, 2000);
+            } else {
+                skillRequestMessage.textContent = 'Please enter some skills.';
+            }
+        }
+
+        function findMatches() {
+            matchesList.innerHTML = '';
+            showArea('skill-matching-area');
+
+            if (currentUser && (currentUser.skills.length > 0 || currentUser.requests.length > 0)) {
+                let matchesFound = false;
+
+                for (const user of users) {
+                    if (user.email !== currentUser.email) {
+
+                         //Check for Matching Skills
+                         let matchedSkills = [];
+
+                           for (const request of currentUser.requests) {
+                                 if (user.skills.includes(request)) {
+                                      matchedSkills.push(request);
+                                  }
+                              }
+
+
+                        if (matchedSkills.length > 0) {
+                              matchesFound = true;
+                               const li = document.createElement('li');
+                               li.textContent = `Match Found with ${user.username} (${user.email})`;
+
+                             //contact
+                             const contactNumber = '123-456-7890';
+                                li.innerHTML += `<div class="contact-details">Contact: ${contactNumber}</div>`;
+
+                              li.innerHTML += ` - <span class="matched-skill">Skills: ${matchedSkills.join(', ')}</span>`;//SHOW THE SKILL
+
+                              matchesList.appendChild(li);
+                           }
+
+                    }
+                }
+
+                if (!matchesFound) {
+                    const li = document.createElement('li');
+                    li.textContent = 'No matches found.';
+                    matchesList.appendChild(li);
+                }
+            } else {
+                const li = document.createElement('li');
+                li.textContent = 'Please provide or need Skills First';
+                matchesList.appendChild(li);
+            }
+        }
+
+        // Event Listeners
+        registerButton.addEventListener('click', register);
+        loginButton.addEventListener('click', login);
+        logoutButton.addEventListener('click', logout);
+
+        provideSkillOption.addEventListener('click', () => {
+            showArea('skill-registration-area');
+        });
+
+        receiveSkillOption.addEventListener('click', () => {
+            showArea('skill-request-area');
+        });
+
+         matchesOption.addEventListener('click', () => {
+            findMatches();
+        });
+
+        registerSkillsButton.addEventListener('click', registerSkills);
+        requestSkillsButton.addEventListener('click', requestSkills);
+
+        matchesLogoutButton.addEventListener('click', logout);
+
+        
+        updateUI();
+    </script>
+</body>
+</html>

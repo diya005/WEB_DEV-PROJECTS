@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claw Machine Game</title>
+    <style>
+        :root {
+            --machine-width: 400px;
+            --machine-height: 500px;
+            --claw-size: 40px;
+            --toy-size: 40px;
+            --claw-speed: 0.3s;
+            --brown: #6b4e3d;
+            --blue: #d8f3ff;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: var(--blue);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 32px;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        #score {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .claw-machine {
+            width: var(--machine-width);
+            height: var(--machine-height);
+            background-color: white;
+            border: 4px solid var(--brown);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .claw {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            width: var(--claw-size);
+            height: var(--claw-size);
+            transform: translateX(-50%);
+            background-color: transparent;
+            border-left: 5px solid #888;
+            border-right: 5px solid #888;
+            transition: top var(--claw-speed) ease-in-out, left var(--claw-speed) ease-in-out;
+        }
+
+        .toys {
+            position: absolute;
+            bottom: 20px;
+            left: 10px;
+            width: calc(var(--machine-width) - 20px);
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .toy {
+            width: var(--toy-size);
+            height: var(--toy-size);
+            border-radius: 10px;
+            position: relative;
+        }
+
+        .toy.brown { background-color: #6b4e3d; }
+        .toy.blue { background-color: #5da7db; }
+        .toy.white { background-color: #ffffff; }
+        .toy.green { background-color: #a3d14d; }
+        .toy.pink { background-color: #ed91bf; }
+        .toy.orange { background-color: #ffa500; }
+        .toy.purple { background-color: #800080; }
+        .toy.yellow { background-color: #ffff00; }
+
+        button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-top: 10px;
+            font-size: 18px;
+            color: red;
+            visibility: hidden;
+        }
+    </style>
+</head>
+<body>
+    <h1>Claw Machine Game</h1>
+    <p id="score">Score: 0</p>
+    <div class="claw-machine">
+        <div class="claw" id="claw"></div>
+        <div class="toys" id="toys">
+            <div class="toy brown"></div>
+            <div class="toy blue"></div>
+            <div class="toy white"></div>
+            <div class="toy green"></div>
+            <div class="toy pink"></div>
+            <div class="toy orange"></div>
+            <div class="toy purple"></div>
+            <div class="toy yellow"></div>
+        </div>
+    </div>
+    <button id="moveClawButton">Move Claw Down</button>
+    <p class="message" id="message">Try again!</p>
+
+    <script>
+        const claw = document.getElementById('claw');
+        const moveClawButton = document.getElementById('moveClawButton');
+        const message = document.getElementById('message');
+        const scoreDisplay = document.getElementById('score');
+        let isClawDown = false;
+        let clawLeft = 50;
+        let score = 0;
+
+        function updateScore() {
+            score += 10;
+            scoreDisplay.textContent = `Score: ${score}`;
+        }
+
+        function checkCollision() {
+            const clawRect = claw.getBoundingClientRect();
+            const toys = document.querySelectorAll('.toy');
+            for (const toy of toys) {
+                const toyRect = toy.getBoundingClientRect();
+                if (
+                    clawRect.left < toyRect.right &&
+                    clawRect.right > toyRect.left &&
+                    clawRect.bottom >= toyRect.top
+                ) {
+                    return toy;
+                }
+            }
+            return null;
+        }
+
+        function canGrabToy() {
+            return Math.random() < 0.8; // Increased chance to grab
+        }
+
+        moveClawButton.addEventListener('click', () => {
+            if (!isClawDown) {
+                isClawDown = true;
+                claw.style.top = '400px';
+                message.style.visibility = 'hidden';
+
+                setTimeout(() => {
+                    const grabbedToy = checkCollision();
+
+                    if (grabbedToy && canGrabToy()) {
+                        grabbedToy.remove();
+                        claw.style.top = '10px';
+                        updateScore();
+                    } else {
+                        claw.style.top = '10px';
+                        message.style.visibility = 'visible';
+                    }
+
+                    setTimeout(() => { isClawDown = false; }, 500);
+                }, 1000);
+            }
+        });
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') {
+                clawLeft -= 5;
+                if (clawLeft < 0) clawLeft = 0;
+                claw.style.left = `${clawLeft}%`;
+            } else if (e.key === 'ArrowRight') {
+                clawLeft += 5;
+                if (clawLeft > 100) clawLeft = 100;
+                claw.style.left = `${clawLeft}%`;
+            }
+        });
+    </script>
+</body>
+</html>

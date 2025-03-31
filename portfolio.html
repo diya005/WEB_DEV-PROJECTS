@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <title>Diya Theyashery - Portfolio</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #000; 
+            color: #fff; 
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: #001f3f; 
+        }
+
+        header h1 {
+            font-size: 2rem;
+        }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        nav ul li {
+            display: inline-block;
+            margin-left: 20px;
+        }
+
+        nav ul li a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        nav ul li a:hover {
+            color: #00aaff; 
+        }
+
+        .intro-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 60px 40px;
+        }
+
+        .intro-text {
+            max-width: 50%;
+        }
+
+        .intro-text h2 {
+           
+            font-size: 3rem;
+            color: #00aaff; 
+        }
+
+        .intro-text p {
+            font-size: 1.2rem;
+            padding-left: 30px;
+        }
+
+        .intro-image img {
+            border-radius: 50%;
+            width: 300px;
+            height: 300px;
+            object-fit: cover; 
+            padding: 40px 150px;
+            padding-right: 150px;  
+        }
+
+        section {
+            padding: 40px 20px;
+        }
+
+        section h2 {
+           
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .about-box {
+            text-align: center;
+            background-color: rgba(255, 255, 255, 0.1); 
+            border-radius: 30px; 
+            padding: 40px; 
+            margin-top: 20px; 
+        }
+
+        h2 {
+    text-align: center;
+}
+.experience-container {
+    display: flex;
+    justify-content: center; /* Center align the boxes */
+    align-items: flex-start; /* Align at the top */
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    gap: 30px; /* Space between boxes */
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    text-align: center;
+}
+
+.experience-item {
+    flex: 1;
+    min-width: 280px; /* Ensures proper spacing */
+    max-width: 320px; /* Keeps a neat look */
+    padding: 20px;
+    border: 1px solid #00aaff;
+    border-radius: 10px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.experience-bottom {
+    display: flex;
+    align-items: center; /* Aligns image & skills box in one line */
+    justify-content: center;
+    gap: 40px; /* Adds spacing between image and skills box */
+    margin-top: 30px;
+}
+
+.experience-image img {
+    width: 100%; /* Increase size */
+    max-width: 400px; /* Ensures it doesn't get too big */
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.2); /* Adds a subtle glow */
+}
+
+.skills-container {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: left;
+    width: 300px; /* Fix width */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+}
+
+.skills-heading {
+    font-size: 1.8rem;
+    color: #00aaff;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.skills-list {
+    list-style-type: none;
+    padding: 0;
+}
+
+.skills-list li {
+    
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 1.1rem;
+    color: #fff;
+}
+
+/* Projects Section */
+.projects-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 40px; /* Space between blocks */
+    padding: 20px;
+}
+
+.project-item {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid #00aaff;
+    border-radius: 10px;
+    padding: 20px;
+    width: calc(20% - 20px); /* Five blocks per row */
+    min-width: 200px; /* Minimum size for responsiveness */
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.project-item h3 {
+    font-size: 1.5rem;
+    color: #00aaff;
+}
+
+.project-item p {
+    font-size: 1rem;
+    margin-bottom: 10px;
+}
+
+.project-item a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 10px 15px;
+    background-color: #00aaff;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
+.project-item a:hover {
+    background-color: #0077cc; /* Darker shade on hover */
+}
+
+/* Hover Effect */
+.project-item:hover {
+    transform: scale(1.05); /* Slightly enlarges the block */
+    box-shadow: 0px 4px 8px rgba(0, 170, 255, 0.5); /* Adds a glowing shadow */
+}
+
+
+@media (max-width: 768px) {
+    .project-item {
+        width: calc(50% - 20px); /* Two blocks per row on medium screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .project-item {
+        width: calc(100% - 20px); /* One block per row on small screens */
+    }
+}
+
+
+        .social-links {
+            text-align: center;
+            margin-top: 20px;
+            color:#fff;
+            
+        }
+
+        .social-links a {
+            margin: 0 10px;
+            font-size: 2rem;
+            color: #fff;
+            text-decoration: none;
+            
+        }
+
+        .social-links a:hover {
+            color: #00aaff;
+        }
+
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            color:#fff;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 140px;
+            background-color: #0d0707;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 5px 0;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -70px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            color:#fff;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+            color:#fff;
+        }
+
+        section {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px; /* Adds spacing between sections */
+}
+
+footer {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-top: 20px; /* Space above footer */
+    background-color: #001f3f; /* Blue background */
+    color: white; /* White text for contrast */
+    padding: 10px 0; /* Adds spacing inside the footer */
+}
+
+        form input, form textarea, form button {
+            display: block;
+            width: 100%;
+            margin-bottom: 10px;
+            padding: 10px;
+            font-size: 16px;
+        }
+
+        form button {
+            background-color: #333; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+        }
+
+        form button:hover {
+            background-color: #555; 
+        }
+
+        /* Education Section Styles */
+        #education {
+            padding: 40px 20px;
+            text-align: center;
+        }
+
+        .education-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .education-box {
+            width: 40%;
+            padding: 20px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .vertical-line {
+            width: 2px;
+            height: auto; /* Adjust height as needed */
+            background-color: #00aaff; /* Color of the vertical line */
+            margin: 0 20px; /* Space between boxes and line */
+        }
+
+        .education-box h3 {
+          font-size: 1.5rem;
+          color: #00aaff; /* Color for education titles */
+      }
+
+      .education-box p {
+          font-size: 1rem; /* Font size for education details */
+      }
+    </style>
+</head>
+<body>
+    
+    <header>
+        <h1>Portfolio</h1>
+        <nav>
+             <ul>
+                <li><a href="#about">About</a></li>
+                <li><a href="#projects">Projects</a></li>
+                <li><a href="#education">Education</a></li> <!-- Added link to Education -->
+                <li><a href="#contact">Contact</a></li>
+             </ul>
+         </nav>
+    </header>
+
+    <section class="intro-section">
+         <div class="intro-text">
+             <h2>Hi! This is Diya Theyashery!</h2>
+             <p>Welcome to my portfolio. I am currently a second-year student pursuing Computer Science with specialization in AI and robotics.</p>
+         </div>
+         <div class="intro-image">
+             <img src="port.png" alt="Diya Theyashery">
+         </div>
+     </section>
+
+    <section id="about">
+         <h2>About Me</h2>
+         <div class="about-box">
+             <p>I am a creative and dedicated web developer and designer passionate about creating beautiful and functional websites using HTML, CSS, and JavaScript. I absolutely enjoy crafting user-friendly websites and various projects that leave a lasting impression.</p>
+             <p>I am also very interested and have worked on projects related to robotics.</p>
+             <p>My goal is to continuously learn and improve my skills while delivering high-quality work.</p>
+         </div>
+     </section>
+
+     <h2>Skills and Experience</h2>
+    <div class="experience-container">
+        <div class="experience-item" id="dreadnought-robotics">
+            <h3>Dreadnought Robotics</h3>
+            <ul>
+                <li>Content and Outreach Team Lead (Sep 2024 - Present, 7 months)</li>
+                
+            </ul>
+        </div>
+        <div class="experience-item" id="microsoft-club">
+            <h3>Microsoft Innovations Club VITC</h3>
+            <ul>
+                <li>Member (Oct 2024 - Present, 6 months)</li>
+            </ul>
+        </div>
+        <div class="experience-item" id="data-science-club">
+            <h3>Data Science Club VIT Chennai</h3>
+            <ul>
+                <li>Member (Sep 2024 - Present, 7 months)</li>
+            </ul>
+        </div>
+
+        <div class="experience-bottom">
+            <div class="experience-image">
+                <img src="experience.png" alt="Experience Overview">
+            </div>
+            <div class="skills-container">
+                <h3 class="skills-heading">Skills</h3>
+                <ul class="skills-list">
+                    <li>HTML, CSS, JavaScript</li>
+                    <li>Frontend Development</li>
+                    <li>Web Design</li>
+                    <li>Python & AI</li>
+                    <li>Robotics & Automation</li>
+                    <li>C,C++</li>
+                    <li>Working with Arduino</li>
+                </ul>
+            </div>
+        </div>
+        
+        
+</section>
+
+
+
+    <!-- Education Section -->
+    <section id="education">
+         <h2>Education</h2>
+         <div class="education-container">
+             <div class="education-box">
+                 <h3>Bachelor of Technology</h3>
+                 <p>Computer Science with specialization in AI and Robotics</p>
+                 <p>Vellore Institute of Technology,Chennai-Present</p>
+             </div>
+             <div class="vertical-line"></div>
+             <div class="education-box">
+                 <h3>High School Diploma</h3>
+                 <p>Science Stream</p>
+                 <p>Global Indian International School,Kuala Lumpur,Malaysia</p>
+             </div>
+         </div>
+     </section>
+
+     <section id="projects">
+        <h2>My Projects</h2>
+        <div class="projects-container">
+            <div class="project-item">
+                <h3>CLAW MACHINE GAME</h3>
+                <p>A game where with the help of a claw which can be moved using arrow keys toys to be picked up.</p>
+                <a href="claw.html" target="_blank">View Project</a>
+            </div>
+            <div class="project-item">
+                <h3>MATCHING SKILLS WITH NEEDS</h3>
+                <p>This website helps users find skilled individuals for specific tasks, such as web development.</p>
+                <a href="trial.html" target="_blank">View Project</a>
+            </div>
+            <div class="project-item">
+                <h3>FLIP PRODUCT 3D CARDS</h3>
+                <p>Showcase and market products with a 3D flip card effect for front and back views.</p>
+                <a href="project3.html" target="_blank">View Project</a>
+            </div>
+            <div class="project-item">
+                <h3>WHACK A MOLE GAME</h3>
+                <p>A classic game where players hit moles as they pop out of random holes.</p>
+                <a href="pro4.html" target="_blank">View Project</a>
+            </div>
+            <div class="project-item">
+                <h3>PLAYABLE PIANO</h3>
+                <p>An interactive web-based piano built using HTML, CSS, and JavaScript.</p>
+                <a href="piano.html" target="_blank">View Project</a>
+            </div>
+        </div>
+    </section>
+    
+
+     <section id="contact">
+         <h2>Contact Me</h2>
+         <form id="contactForm">
+             <input type="text" placeholder="Your Name" required />
+             <input type="email" placeholder="Your Email" required />
+             <textarea placeholder="Your Message" required></textarea>
+             <button type="submit">Send Message</button>
+         </form>
+     </section>
+
+     <section id="social-links">
+        <h2>Social Links</h2>
+        <div class="social-links">
+            <span class="tooltip">
+                <a href="mailto:diya.theyashery@gmail.com" target="_blank"><i class="fas fa-envelope"></i></a>
+                <span class="tooltiptext">diya.theyashery@gmail.com</span>
+            </span>
+            <span class="tooltip">
+                <a href="https://linkedin.com/in/diya-theyashery-a372a2293" target="_blank"><i class="fab fa-linkedin"></i></a>
+                <span class="tooltiptext">linkedin.com/in/diya-theyashery</span>
+            </span>
+            <span class="tooltip">
+                <a href="https://github.com/diya005" target="_blank"><i class="fab fa-github"></i></a>
+                <span class="tooltiptext">diya005</span>
+            </span>
+        </div>
+    </section>
+
+   
+     <footer>
+         <p>&copy; 2025 Diya Theyashery. All rights reserved.</p>
+     </footer>
+
+     
+     <script>
+       document.getElementById('contactForm').addEventListener('submit', function(event) {
+           event.preventDefault(); // Prevent form submission
+           alert('Thank you for your message! I will get back to you soon.');
+           this.reset(); // Reset form fields
+       });
+
+       
+    const experienceItems = document.querySelectorAll('.experience-item');
+    
+    experienceItems.forEach(item => {
+        item.addEventListener('mouseenter', () => {
+            item.style.backgroundColor = '#00aaff';
+            item.style.color = '#fff';
+            item.style.transform = 'scale(1.05)';
+        });
+
+        item.addEventListener('mouseleave', () => {
+            item.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+            item.style.color = '#fff';
+            item.style.transform = 'scale(1)';
+        });
+    });
+
+
+     </script>
+
+</body>
+</html>
